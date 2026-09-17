@@ -6,7 +6,7 @@ I wrote this script to automate initial setup of Debian 13. It's simple but usef
 
 **Step 2.** Change a locale file to set 24-hour time format.
 
-**Step 3.** Change APT sources.list from default to Latvian (they're faster for me).
+**Step 3.** Change APT sources.list from default to European (they're faster for me).
 
 **Step 4.** Set Fira Mono font as a default monospace font.
 
