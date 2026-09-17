@@ -7,6 +7,7 @@ APT_SOURCES_LIST=/etc/apt/sources.list
 FONTS_LOCATION=/usr/local/share/fonts/
 ENVIRONMENT_FILES_LOCATION=/etc/environment.d/
 PLASMA_THEMES_LOCATION=$HOME/.local/share/plasma/desktoptheme/
+APT_MIRROR=ftp.nl.debian.org
 
 chex() {
     . ./check-execution.sh
@@ -49,9 +50,9 @@ echo -e '\nWorking with APT mirrors...' && sleep 2
 sudo cp $APT_SOURCES_LIST $APT_SOURCES_LIST.bak && \
 (
 sudo tee $APT_SOURCES_LIST << 'EOF'
-deb http://ftp.nl.debian.org/debian trixie main contrib non-free non-free-firmware
-deb http://ftp.nl.debian.org/debian trixie-updates main contrib non-free non-free-firmware
-deb http://ftp.nl.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+deb http://$APT_MIRROR/debian trixie main contrib non-free non-free-firmware
+deb http://$APT_MIRROR/debian trixie-updates main contrib non-free non-free-firmware
+deb http://$APT_MIRROR/debian-security trixie-security main contrib non-free non-free-firmware
 EOF
 ) && sudo apt update
 
