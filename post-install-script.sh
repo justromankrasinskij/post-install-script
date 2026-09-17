@@ -49,9 +49,9 @@ echo -e '\nWorking with APT mirrors...' && sleep 2
 sudo cp $APT_SOURCES_LIST $APT_SOURCES_LIST.bak && \
 (
 sudo tee $APT_SOURCES_LIST << 'EOF'
-deb http://debian.koyanet.lv/debian trixie main contrib non-free non-free-firmware
-deb http://debian.koyanet.lv/debian trixie-updates main contrib non-free non-free-firmware
-deb http://debian.koyanet.lv/debian-security trixie-security main contrib non-free non-free-firmware
+deb http://ftp.nl.debian.org/debian trixie main contrib non-free non-free-firmware
+deb http://ftp.nl.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+deb http://ftp.nl.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
 EOF
 ) && sudo apt update
 
