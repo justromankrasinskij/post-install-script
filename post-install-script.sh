@@ -49,7 +49,7 @@ echo -e '\nWorking with APT mirrors...' && sleep 2
 
 sudo cp $APT_SOURCES_LIST $APT_SOURCES_LIST.bak && \
 (
-sudo tee $APT_SOURCES_LIST << 'EOF'
+sudo tee $APT_SOURCES_LIST << EOF
 deb http://$APT_MIRROR/debian trixie main contrib non-free non-free-firmware
 deb http://$APT_MIRROR/debian trixie-updates main contrib non-free non-free-firmware
 deb http://$APT_MIRROR/debian-security trixie-security main contrib non-free non-free-firmware
