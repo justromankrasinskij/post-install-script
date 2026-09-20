@@ -1,13 +1,15 @@
 #!/bin/bash
-# Tested on Debian v13.6.0 [Plasma v6.3.6]
+# Tested on Debian v13.7.0 [Plasma v6.3.6]
 
-GRUB_FILE=/etc/default/grub
-LOCALE_FILE=/etc/default/locale
-APT_SOURCES_LIST=/etc/apt/sources.list
-FONTS_LOCATION=/usr/local/share/fonts/
-ENVIRONMENT_FILES_LOCATION=/etc/environment.d/
-PLASMA_THEMES_LOCATION=$HOME/.local/share/plasma/desktoptheme/
-APT_MIRROR=ftp.nl.debian.org
+GRUB_FILE="/etc/default/grub"
+LOCALE_FILE="/etc/default/locale"
+LOCALE_GEN_FILE="/etc/locale.gen"
+TARGET_LOCALE="en_GB.UTF-8 UTF-8"
+APT_SOURCES_LIST="/etc/apt/sources.list"
+FONTS_LOCATION="/usr/local/share/fonts/"
+ENVIRONMENT_FILES_LOCATION="/etc/environment.d/"
+PLASMA_THEMES_LOCATION="$HOME/.local/share/plasma/desktoptheme/"
+APT_MIRROR="ftp.nl.debian.org"
 
 chex() {
     . ./check-execution.sh
@@ -30,7 +32,25 @@ chex
 #================================END================================#
 
 #===============================BEGIN===============================#
-echo -e '\nWorking with locales...' && sleep 2
+echo -e '\nWorking with locales (Step 1)...' && sleep 2
+
+sudo cp $LOCALE_GEN_FILE $LOCALE_GEN_FILE.bak
+
+if grep -qE "^#[[:space:]]*${TARGET_LOCALE}" "$LOCALE_GEN_FILE"; then
+    sudo sed -i -E "s/^#[[:space:]]*(${TARGET_LOCALE})/\1/" "$LOCALE_GEN_FILE"
+elif ! grep -qF "${TARGET_LOCALE}" "$LOCALE_GEN_FILE"; then
+    echo "${TARGET_LOCALE}" | sudo tee -a "$LOCALE_GEN_FILE" > /dev/null
+else
+    echo "Locale is already active in ${LOCALE_GEN_FILE}."
+fi
+
+sudo locale-gen
+
+chex
+#================================END================================#
+
+#===============================BEGIN===============================#
+echo -e '\nWorking with locales (Step 2)...' && sleep 2
 
 sudo cp $LOCALE_FILE $LOCALE_FILE.bak && \
 (
