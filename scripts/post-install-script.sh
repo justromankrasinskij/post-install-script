@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tested on Debian v13.7.0 [Plasma v6.3.6]
+# Tested on Debian v13.7.0 [Plasma 6.3.6, GNOME 48]
 
 GRUB_FILE="/etc/default/grub"
 LOCALE_FILE="/etc/default/locale"
@@ -7,8 +7,6 @@ LOCALE_GEN_FILE="/etc/locale.gen"
 TARGET_LOCALE="en_GB.UTF-8 UTF-8"
 APT_SOURCES_LIST="/etc/apt/sources.list"
 FONTS_LOCATION="/usr/local/share/fonts/"
-ENVIRONMENT_FILES_LOCATION="/etc/environment.d/"
-PLASMA_THEMES_LOCATION="$HOME/.local/share/plasma/desktoptheme/"
 APT_MIRROR="ftp.nl.debian.org"
 
 chex() {
@@ -82,28 +80,29 @@ chex
 #===============================BEGIN===============================#
 echo -e '\nWorking with fonts...' && sleep 2
 
-sudo cp -r fira-mono $FONTS_LOCATION && \
-sudo cp local.conf /etc/fonts/
+sudo cp -r ../fira-mono ../inter $FONTS_LOCATION && \
+sudo cp ../local.conf /etc/fonts/
 
 chex
 #================================END================================#
 
 #===============================BEGIN===============================#
-echo -e '\nWorking with environment files...' && sleep 2
+echo -e '\nWorking with specific desktop environment settings...' && sleep 2
 
-sudo touch $ENVIRONMENT_FILES_LOCATION/custom.conf
-sudo tee $ENVIRONMENT_FILES_LOCATION/custom.conf << 'EOF'
-QT_SCALE_FACTOR_ROUNDING_POLICY=RoundPreferFloor
-EOF
+read -p "Enter your desktop environment (kde/gnome): " env
 
-chex
-#================================END================================#
-
-#===============================BEGIN===============================#
-echo -e '\nWorking with packages...' && sleep 2
-
-sudo apt purge akregator dragonplayer gimp juk kaddressbook kdeconnect kmag kmail kmousetool kmouth konqueror kontrast korganizer pim-data-exporter pim-sieve-editor sweeper xterm kwrite -y && \
-sudo apt autoremove --purge -y
+case "$env" in
+    kde)
+        . ./kde.sh
+        ;;
+    gnome)
+	. ./gnome.sh    
+        ;;
+    *)
+        echo "Enter 'kde' or 'gnome'."
+        exit 1
+        ;;
+esac
 
 chex
 #================================END================================#
@@ -133,15 +132,6 @@ for item in "$HOME"/*; do
 done
 
 shopt -u dotglob
-
-chex
-#================================END================================#
-
-#===============================BEGIN===============================#
-echo -e '\nWorking with Plasma themes...' && sleep 2
-
-mkdir -p $PLASMA_THEMES_LOCATION
-cp -r breeze-custom $PLASMA_THEMES_LOCATION
 
 chex
 #================================END================================#
